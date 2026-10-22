@@ -31,12 +31,12 @@ test accuracy reaches **84.2%** from scratch and **90.5%** with fine-tuning (see
 **Main takeaways**
 
 - **Input resolution** is the most important choice in both parts. Going from 224×224 to 448×448 gives +6.2 test points
-  from scratch and +9.3 with fine-tuning.
+  from scratch and +9.4 with fine-tuning.
 - **From scratch**, three components are essential, and all three ablation studies agree on them:
   - data augmentation (−23 to −31 points without it);
   - a long enough schedule (−19 to −29 with 40 instead of 100 epochs);
   - batch normalization (−14 to −20).
-- **Also from scratch**, three components have no measurable effect in our setting: skip connections, label smoothing and
+- **Also from scratch**, three components have little or no measurable effect in our setting: skip connections, label smoothing and
   dropout.
 - **Pretraining** is worth ≈14 test points with the very same recipe.
 - **The usual fine-tuning advice does not hold here.** Smaller learning rates for the pretrained layers hurt (≈−4 points),
@@ -208,7 +208,7 @@ Tried and not adopted:
 
 The finding of P1.8 deserves a note. The center crop beat the rectangular input not because of its shape but because the
 aircraft is seen at a **higher resolution**. This motivated the resolution study of P1.10, which we stopped at 448×448
-because the gain had shrunk to +1.7 points, close to the run-to-run noise.
+because the gain had shrunk to +1.8 points, close to the run-to-run noise.
 
 ### Ablation study of the final model (P1.11)
 
@@ -229,12 +229,12 @@ Each run removes or changes **one** component of the final model. A second seed 
 | Plain blocks (no skip connections) | 69.6% | +0.6 | 69.4% |
 
 The same ablation was also run on two earlier reference models: the 192×288 rectangular model (P1.7) and the 224×224
-model (P1.9). The ranking of the components is the same in all three studies:
+model (P1.9). The conclusions are the same in all three studies:
 
 - **Essential:** augmentation, schedule length and batch normalization.
 - **Without batch normalization** even the training accuracy stays at 62%, so its role here is mainly to make
   optimization possible.
-- **No measurable effect:** skip connections, label smoothing and dropout. With strong augmentation and a long
+- **Little or no measurable effect:** skip connections, label smoothing and dropout. With strong augmentation and a long
   schedule, augmentation dominates the other regularizers. A network of this depth with batch normalization trains just
   as well without skip connections.
 
@@ -278,7 +278,7 @@ Findings:
   domains are.
 - **Resolution matters most.** At the native 224×224 resolution of the pretrained network, the 2A recipe would lose
   ≈9 points (72.5% test with 100 epochs). Accuracy saturates at 448×448, and 512×512 brings nothing.
-- **TrivialAugment** gives the best validation accuracy (+0.6 points over 2A, within noise). It keeps training accuracy
+- **TrivialAugment** gives the best validation accuracy (+0.6 points over 2A, within the ≈1-point noise estimated in Part 1). It keeps training accuracy
   below 100% and profits from the longer schedule.
 
 The recipe inherited from Part 1 was therefore already close to the best one we found. The two choices that matter most
