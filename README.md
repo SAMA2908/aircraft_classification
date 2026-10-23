@@ -53,7 +53,7 @@ The notebook is designed for **Google Colab**. Open it in Colab (*File → Open 
 
 As published, the notebook **does not train anything** (`ALLOW_TRAINING = False`). Executed top to bottom, it:
 
-1. downloads the dataset (≈2.7 GB) from a copy shared by link on Google Drive, falling back to the official Oxford server
+1. downloads the dataset (≈2.75 GB) from a copy shared by link on Google Drive, falling back to the official Oxford server
    if that download fails;
 2. downloads the **published results** of all 54 experiments: a zip shared by link that holds the configuration,
    training history and accuracies of every run, plus the checkpoints of the three final models;
@@ -123,9 +123,9 @@ Preprocessing:
   Random augmentations are still applied at every epoch.
 - **Normalization.** Images are normalized with the ImageNet statistics in every part, so the pretrained ResNet-18
   receives inputs from the distribution it was trained on.
-- **Input geometry.** Images are ≈1.5× wider than tall, so three ways of obtaining the network input are compared:
+- **Input geometry.** Images are ≈1.5× wider than tall, so three ways of obtaining the network input are considered:
   - `crop`: square center crop, which may cut nose and tail;
-  - `squash`: resize to a square, which distorts the aircraft;
+  - `squash`: resize to a square, which distorts the aircraft (only illustrated, not trained);
   - `rect`: resize to a 1:1.5 rectangle, which works because the network ends with global average pooling.
 - **Augmentation levels.**
   - `basic`: `RandomResizedCrop` with an aspect ratio matched to the input geometry, plus horizontal flip;
